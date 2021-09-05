@@ -6,7 +6,7 @@ var router = express.Router();
 
 router.route('/')
     .get(function (req, res) {
-            console.log('controller [get] queryUsers() ');
+            console.log('router [get] queryUsers() ');
             users.queryUsers(req, function (err, results, fields) {
 
             if (err) {
@@ -24,7 +24,7 @@ router.route('/')
     })
 
     .post(function (req, res) {        
-            console.log('controller [post] addUser()');
+            console.log('router [post] addUser()');
             users.addUser(req, function (err, results, fields) {
             
             if (err) {
@@ -44,7 +44,7 @@ router.route('/')
 
 router.route('/login')
     .post(function (req, res) {        
-            console.log('controller [post] queryUserByNamePassword()');
+            console.log('router [post] queryUserByNamePassword()');
             users.queryUserByNamePassword( req, function (err, results, fields) {
             //console.log('login 2 length='+ results.length );
 
@@ -71,7 +71,7 @@ router.route('/login')
 
 router.route('/:id')    
     .get(function (req, res) {
-           console.log('controller [get] queryUserByID()');
+           console.log('router [get] queryUserByID()');
            users.queryUserByID(req, function (err, results, fields) {
             
             if (err) {
@@ -88,7 +88,7 @@ router.route('/:id')
         });
     })  
     .delete(function (req, res) {        
-             console.log('controller [delete] deleteUserByID()');
+             console.log('router [delete] deleteUserByID()');
              users.deleteUserByID(req, function (err, results, fields) {
 
             if (err) {
@@ -109,7 +109,7 @@ router.route('/:id')
     })
     
     .patch(function (req, res) {
-            console.log('controller [patch] updateByID()');
+            console.log('router [patch] updateByID()');
             users.updateByID(req, function (err, results, fields) {
 
             if (err) {

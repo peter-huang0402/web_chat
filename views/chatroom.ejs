@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html>
+
+<head>	
+	<meta charset='utf-8'>
+	<title>WebSocket Chat</title>
+        <link rel='stylesheet' href='/stylesheets/login_style.css' />
+</head>
+
+<body>
+	<form onsubmit="return false;">
+		<h3 >Web Chat Room</h3>
+                <textarea id="usersText" style="width: 80px; height: 300px; "></textarea>
+		<textarea id="responseText" style="width: 500px; height: 300px;  "></textarea>
+		<br>
+		<input type="text" name="message" style="width: 380px" value="" placeholder="Key in your mssage">
+		<input type="button" value="Send" onclick="send(this.form.message.value)"> 
+		
+		<input type="button" onclick="javascript:document.getElementById('responseText').value=''" 
+			value="Clear" class="">
+                <input type="button" value="Exit" onclick="exitRoom()" class=""> 
+	</form>
+	<br>	
+</body>
+
+</html>
+
+	<script type="text/javascript">
+
+
+		const queryString = window.location.search;
+		const urlParams = new URLSearchParams(queryString);
+		const username = urlParams.get('username');
+
+		var socket;
+		if (!window.WebSocket) {
+			window.WebSocket = window.MozWebSocket;
+		}
+		if (window.WebSocket) {
+			socket = new WebSocket("ws://localhost:8080/ws?user="+username);
+			socket.onmessage = function (event) {
+				var ta = document.getElementById('responseText');
+				var users = document.getElementById('usersText');
+                                
+                                var obj = JSON.parse(event.data);                               
+                                				                               
+                                if ( obj.op == 'users' ){
+				    users.value ="All users\n";
+				    users.value =users.value + "-----------";
+                                    obj = obj.payload;  
+                                    var people = obj.split(",");
+                                    
+                                    for(var i=0;i<people.length;i++){ 
+                                        //alert('%s= %s'+i,people[i]);
+                                   	users.value = users.value +  people[i] +'\n' ;
+                                    }
+                                }else if ( obj.op == 'msg' ){ 			        
+			           ta.value = ta.value + obj.from+" : "+obj.payload + '\n' ;
+                                } 
+			};
+			socket.onopen = function (event) {
+				var ta = document.getElementById('responseText');
+				ta.value = "Connected to server.\n";
+                                var users = document.getElementById('usersText');
+				users.value ="All users\n";
+				users.value =users.value + "-----------\n";
+			};
+			socket.onclose = function (event) {
+				var ta = document.getElementById('responseText');
+				ta.value = ta.value + "Disconnected from server.\n";
+                                top.location.href = "/";
+			};
+		} else {
+			alert("Your browser is not support WebSocket！");
+		}
+
+		function send(message) {
+
+			if (!window.WebSocket) {
+				return;
+			}
+			if (socket.readyState == WebSocket.OPEN) {			
+				socket.send( JSON.stringify( {op:"msg",  payload:message , from:username  } )  );
+			} else {
+				alert("Connection is not built.");
+			}
+		}
+
+                function exitRoom() {
+			if (!window.WebSocket) {
+				return;
+			}
+                        socket.close();
+                }
+
+	</script>
