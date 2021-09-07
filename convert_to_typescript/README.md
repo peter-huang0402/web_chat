@@ -1,4 +1,4 @@
-<b># web_chat implemented by typescirpt</b>
+<b># web_chat implemented by typescript</b>
 
 
 <b>## build</b></p>
