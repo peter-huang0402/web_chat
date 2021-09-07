@@ -9,16 +9,26 @@
 
 <body>
 	<form onsubmit="return false;">
-		<h3 >Web Chat Room</h3>
-                <textarea id="usersText" style="width: 80px; height: 300px; "></textarea>
-		<textarea id="responseText" style="width: 500px; height: 300px;  "></textarea>
-		<br>
-		<input type="text" name="message" style="width: 380px" value="" placeholder="Key in your mssage">
-		<input type="button" value="Send" onclick="send(this.form.message.value)"> 
-		
-		<input type="button" onclick="javascript:document.getElementById('responseText').value=''" 
-			value="Clear" class="">
-                <input type="button" value="Exit" onclick="exitRoom()" class=""> 
+                <table  align="center">
+                <tr>
+                  <td colspan="2" >
+		     <h2 >Web Chat Room</h2>
+                  </td>
+                </tr>
+                <tr>  
+                   <th> <textarea id="usersText" style="width: 80px; height: 300px; "></textarea> </th>
+		   <th> <textarea id="responseText" style="width: 500px; height: 300px;  "></textarea> </th>
+                </tr>
+		<!-- <br> -->
+                <tr>
+                  <td colspan="2" >
+		    <input type="text" name="message" style="width: 420px" value="" placeholder="Key in your mssage" >
+		    <input type="button" value="Send" onclick="send(this.form.message.value)" class="register" > 		
+		    <input type="button" onclick="javascript:document.getElementById('responseText').value=''" 
+			value="Clear" class="login" >
+                    <input type="button" value="Exit" onclick="exitRoom()" class="login" > 
+                 </td>
+                </tr>
 	</form>
 	<br>	
 </body>
@@ -46,7 +56,7 @@
                                 				                               
                                 if ( obj.op == 'users' ){
 				    users.value ="All users\n";
-				    users.value =users.value + "-----------";
+				    users.value =users.value + "---------\n";
                                     obj = obj.payload;  
                                     var people = obj.split(",");
                                     
@@ -63,7 +73,7 @@
 				ta.value = "Connected to server.\n";
                                 var users = document.getElementById('usersText');
 				users.value ="All users\n";
-				users.value =users.value + "-----------\n";
+				users.value =users.value + "---------\n";
 			};
 			socket.onclose = function (event) {
 				var ta = document.getElementById('responseText');
